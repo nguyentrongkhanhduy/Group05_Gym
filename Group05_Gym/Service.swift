@@ -7,28 +7,27 @@
 
 import Foundation
 
-enum Weekdays {
-    case Monday
-    case Tuesday
-    case Wednesday
-    case Thursday
-    case Friday
-    case Saturday
-    case Sunday
-}
-
-class Service {
-    var id: Int = 0
-    var name: String = "Service"
-    var totalSession: Int = 0
-    var price: Double = 0.0
-    var session: [(Weekdays,[String])] = [
-        (Weekdays.Monday, []),
-        (Weekdays.Tuesday, []),
-        (Weekdays.Wednesday, []),
-        (Weekdays.Thursday, []),
-        (Weekdays.Friday, []),
-        (Weekdays.Saturday, []),
-        (Weekdays.Sunday, []),
-    ]
+class Service : IsPurchasable {
+    
+    var id: Int
+    var type: String
+    var name: String
+    var totalSession: Int
+    var price: Double
+    
+    var attendedSession = 0
+    
+    var info: String {
+        return ""
+    }
+ 
+    init(id: Int, type: String, name: String, totalSession: Int, price: Double) {
+        self.id = id
+        self.type = type
+        self.name = name
+        self.totalSession = totalSession
+        self.price = price
+    }
+    
+    func printReceipt() {}
 }
