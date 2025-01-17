@@ -65,4 +65,41 @@ class Utils {
         }
         return input
     }
+    
+    static func checkServiceExisted(serviceList: [Service], id: Int) -> Bool {
+        for service in serviceList {
+            if id == service.id {
+                print("Id is already existed. Please choose another id.")
+                return true
+            }
+        }
+        return false
+    }
+    
+    static func deepCopyService(service: Service) -> Service {
+        switch service.type {
+        case "Fitness Class":
+            let thisService = service as! Fitness
+            let newFitness = Fitness(
+                id: thisService.id,
+                name: thisService.name,
+                totalSession: thisService.totalSession,
+                price: thisService.price,
+                duration: thisService.duration
+            )
+            return newFitness
+        case "Personal Training":
+            let thisService = service as! PersonalTraining
+            let newPersonal = PersonalTraining(
+                id: thisService.id,
+                name: thisService.name,
+                totalSession: thisService.totalSession,
+                price: thisService.price,
+                trainer: thisService.trainer
+            )
+            return newPersonal
+        default:
+            return service
+        }
+    }
 }

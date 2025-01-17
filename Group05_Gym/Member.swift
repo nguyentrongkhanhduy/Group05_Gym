@@ -8,18 +8,31 @@
 import Foundation
 
 class Member {
-    var id: Int = 123456
+    var id: Int = 123
     var name: String
     var creditBalance: Double = 100.0
     
-    var bookedService: [Service] = []
+    var bookedService: [Service] = [
+        
+    ]
     
-    init(id: Int, name: String) {
-        self.id = id
+    init(name: String) {
         self.name = name
     }
     
-    func bookService() {
+    func deposit(amount: Double) {
+        
+    }
+    
+    func getBalance() -> Double {
+        return self.creditBalance
+    }
+    
+    func getBookedService() -> [Service] {
+        return self.bookedService
+    }
+    
+    func markAttendance(id: Int) {
         
     }
 }

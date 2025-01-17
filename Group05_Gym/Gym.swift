@@ -130,16 +130,11 @@ class Gym {
             print()
             print("Please create an ID for the service:")
             var newId = Utils.checkInputInt()
-            for service in serviceList {
-                if newId == service.id {
-                    print("Id is already existed. Please choose another id.")
-                    newId = -1
-                    break
-                }
-            }
-            if newId == -1 {
+            if Utils
+                .checkServiceExisted(serviceList: self.serviceList, id: newId) {
                 continue
             }
+            
             print("Please enter class name:")
             let newName = Utils.checkInputString()
             
@@ -180,16 +175,11 @@ class Gym {
             print()
             print("Please create an ID for the service:")
             var newId = Utils.checkInputInt()
-            for service in serviceList {
-                if newId == service.id {
-                    print("Id is already existed. Please choose another id.")
-                    newId = -1
-                    break
-                }
-            }
-            if newId == -1 {
+            if Utils
+                .checkServiceExisted(serviceList: self.serviceList, id: newId) {
                 continue
             }
+            
             print("Please enter class name:")
             let newName = Utils.checkInputString()
             

@@ -29,5 +29,16 @@ class Service : IsPurchasable {
         self.price = price
     }
     
-    func printReceipt() {}
+    func printReceipt(type: String, service: Service, success: Bool = false) {
+        switch type {
+        case "Booking":
+            break
+        case "Cancellation":
+            break
+        case "Refund":
+            break
+        default:
+            break
+        }
+    }
 }
