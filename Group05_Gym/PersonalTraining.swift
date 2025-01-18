@@ -8,12 +8,20 @@
 import Foundation
 
 class PersonalTraining : Service {
-    var trainer: String
+    private var _trainer: String
+    var trainer: String {
+        get {
+            return _trainer
+        }
+        set {
+            _trainer = newValue
+        }
+    }
     
     override var info: String {
         var result = "--------------------------------------------------------\n"
-        result += "ID: \(self.id)\nService type: \(self.type)\nName: \(self.name)\nPrice: \(self.price)\nTotal sessions: \(self.totalSession)\n"
-        result += "Trainer: \(self.trainer)\n"
+        result += "ID: \(self.id)\nService type: \(self.type)\nName: \(self.name)\nCredit: \(self.price)\nTotal sessions: \(self.totalSession)\n"
+        result += "Trainer: \(self.trainer)"
         return result
     }
 
@@ -24,7 +32,7 @@ class PersonalTraining : Service {
         price: Double = 50.0,
         trainer: String = "Alex"
     ) {
-        self.trainer = trainer
+        self._trainer = trainer
         super.init(id: id, type: "Personal Training", name: name, totalSession: totalSession, price: price)
     }
 }

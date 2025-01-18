@@ -19,7 +19,7 @@ class Utils {
         var inputString: String?
         inputString = readLine()
         while checkInput(input: inputString) {
-            print("Please choose valid input.")
+            print("Please enter valid input.")
             inputString = readLine()
         }
         return inputString ?? ""
@@ -30,7 +30,7 @@ class Utils {
         var input: String?
         input = readLine()
         while checkInput(input: input) {
-            print("Please choose valid input.")
+            print("Please enter valid input.")
             input = readLine()
         }
         guard let number = Double(input!) else {
@@ -47,7 +47,7 @@ class Utils {
         var inputMemberType: String?
         inputMemberType = readLine()
         while checkInput(input: inputMemberType) {
-            print("Please choose valid input.")
+            print("Please enter valid input.")
             inputMemberType = readLine()
         }
         if let number = Int(inputMemberType!) {
@@ -60,7 +60,7 @@ class Utils {
     static func checkValidInput(range: ClosedRange<Int>) -> Int {
         var input = checkInputInt()
         while !range.contains(input) {
-            print("Please choose valid input.")
+            print("Please enter valid input.")
             input = checkInputInt()
         }
         return input
