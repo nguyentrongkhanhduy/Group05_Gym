@@ -102,4 +102,13 @@ class Utils {
             return service
         }
     }
+    
+    static func checkMemberExisted(membershipList: [Member], id: Int) -> Bool {
+        for member in membershipList {
+            if id == member.id {
+                return true
+            }
+        }
+        return false
+    }
 }

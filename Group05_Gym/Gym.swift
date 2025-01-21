@@ -279,15 +279,273 @@ class Gym {
         while true {
             print()
             print("Hi, please select an option to continue to the services:")
-            print("     1. Input member ID")
+            print("     1. Login by member ID")
             print("     2. Create membership")
             print("     3. Return")
             
             switch Utils.checkValidInput(range: 1...3) {
+            case 1:
+                if memberLogin() {
+                    continue
+                }
             case 3:
                 return
             default:
                 return
+            }
+        }
+    }
+    
+    func memberLogin() -> Bool {
+        while true {
+            print()
+            print("Please enter your member ID:")
+            let inputId = Utils.checkInputInt()
+            if !Utils
+                .checkMemberExisted(membershipList: self.membershipList, id: inputId) {
+                print("member ID: \(inputId) not found, please try again or create a new membership")
+                continue
+            }
+            if memberMenu(memberId:inputId) {
+                return true // Indicate to restart beginMemberAction
+            } else {
+                return false // Exit to beginMemberAction
+            }
+        }
+    }
+    
+    func memberMenu(memberId: Int) -> Bool {
+        while true {
+            guard let member = self.membershipList.first(where: { $0.id == memberId }) else {
+                print("Member not found.")
+                return true
+            }
+            // Print member info
+            print()
+            print(member.getMemberInfo())
+            print()
+            
+            // Display menu options
+            print("Hi \(member.name), please select an option to continue to the services:")
+            print("     1. Reload credit points")
+            print("     2. Searching for service")
+            print("     3. Purchase service")
+            print("     4. Manage my service")
+            print("     5. Logout")
+            
+            switch Utils.checkValidInput(range: 1...5) {
+            case 1:
+                reloadCredit(memberId: memberId)
+            case 2:
+                searchService()
+                print("\nPress Enter to continue...")
+                _ = readLine()
+            case 3:
+                purchaseService(memberId: memberId)
+            case 4:
+                manageMyServices(memberId: memberId)
+            case 5:
+                return true
+            default :
+                return true
+            }
+        }
+    }
+    
+    func reloadCredit(memberId: Int) {
+        let member = self.membershipList.first(where: { $0.id == memberId })!
+        print("Hi \(member.name), Please enter the amount you want to reload:")
+        let inputAmount = Utils.checkInputDouble()
+        if self.membershipList.first(where: { $0.id == memberId })!.deposit(amount: inputAmount){
+            print("deposit successful")
+        }
+    }
+    
+    func purchaseService(memberId: Int) {
+        while true {
+            let member = self.membershipList.first(where: { $0.id == memberId })!
+            print()
+            print("Hi \(member.name), please select your action:")
+            print("     1. View all services")
+            print("     2. Purchase service by name or id")
+            print("     3. Return")
+            
+            switch Utils.checkValidInput(range: 1...3) {
+            case 1:
+                printAllServices()
+            case 2:
+                purchaseServiceBynameOrId(memberId: memberId)
+            case 3:
+                return
+            default:
+                return
+            }
+        }
+    }
+    
+    func purchaseServiceBynameOrId(memberId: Int) {
+        print()
+        print("Please enter Service ID or keyword:")
+        let keyword = Utils.checkInputString()
+        if let number = Int(keyword) {
+            for service in serviceList {
+                if service.id == number {
+                    print(service.info)
+                    purchaseAction(memberId: memberId, service: service)
+                    return
+                }
+            }
+            print("Service ID does not exist!")
+        } else {
+            var exist = false
+            for service in serviceList {
+                if service.name
+                    .lowercased()
+                    .contains(keyword.lowercased()) {
+                    exist = true
+                    print(service.info)
+                    purchaseAction(memberId: memberId, service: service)
+                }
+            }
+            if exist {
+                return
+            }
+            print("Service does not exist!")
+        }
+    }
+    
+    func purchaseAction(memberId: Int, service: Service){
+        while true{
+            print()
+            print("please select your action:")
+            print("     1. confirm purchase")
+            print("     2. Return")
+            
+            switch Utils.checkValidInput(range: 1...2) {
+            case 1:
+                self.membershipList.first(where: { $0.id == memberId })!.bookService(service)
+                return
+            case 2:
+                return
+            default:
+                return
+            }
+        }
+    }
+    
+    func manageMyServices(memberId: Int){
+        while true{
+            print()
+            print("please select your action:")
+            print("     1. make attendance for booked service")
+            print("     2. cancel booked service")
+            print("     3. return")
+            
+            switch Utils.checkValidInput(range: 1...2) {
+            case 1:
+                makeAttendance(memberId: memberId)
+                return
+            case 2:
+                cancelService(memberId: memberId)
+                return
+            case 3:
+                return
+            default:
+                return
+            }
+        }
+    }
+    
+    func makeAttendance(memberId: Int) {
+        while true{
+            let member = self.membershipList.first(where: { $0.id == memberId })!
+            let serviceList: [Service] = member.getBookedService()
+            print("hi, here are your services:")
+            for service in serviceList {
+                print(service.info)
+            }
+            print("-----------------------------------------")
+            print("Please enter Service ID or keyword you want attend:")
+            let keyword = Utils.checkInputString()
+            if let number = Int(keyword) {
+                for service in serviceList {
+                    if service.id == number {
+                        print(service.info)
+                        print("\nPress Enter to continue...")
+                        _ = readLine()
+                        if service.attendedSession < service.totalSession {
+                            service.attendedSession += 1
+                        } else {
+                            print("You already finished this service!")
+                        }
+                        return
+                    }
+                }
+                print("Service ID does not exist!")
+            } else {
+                var exist = false
+                for service in serviceList {
+                    if service.name
+                        .lowercased()
+                        .contains(keyword.lowercased()) {
+                        exist = true
+                        print(service.info)
+                        print("\nPress Enter to continue...")
+                        _ = readLine()
+                        if service.attendedSession < service.totalSession {
+                            service.attendedSession += 1
+                        } else {
+                            print("You already finished this service!")
+                        }
+                    }
+                }
+                if exist {
+                    return
+                }
+                print("Service does not exist!")
+            }
+        }
+    }
+    
+    func cancelService(memberId: Int) {
+        while true{
+            let member = self.membershipList.first(where: { $0.id == memberId })!
+            let serviceList: [Service] = member.getCancellableService()
+            print("hi, here are your cancellable services:")
+            for service in serviceList {
+                print(service.info)
+            }
+            print("-----------------------------------------")
+            print("Please enter Service ID or keyword you want cancel:")
+            let keyword = Utils.checkInputString()
+            if let number = Int(keyword) {
+                for service in serviceList {
+                    if service.id == number {
+                        print(service.info)
+                        print("\nPress Enter to continue...")
+                        _ = readLine()
+                        // TODO: cancel logic
+                        return
+                    }
+                }
+                print("Service ID does not exist!")
+            } else {
+                var exist = false
+                for service in serviceList {
+                    if service.name
+                        .lowercased()
+                        .contains(keyword.lowercased()) {
+                        exist = true
+                        print(service.info)
+                        print("\nPress Enter to continue...")
+                        _ = readLine()
+                        // TODO: cancel logic
+                    }
+                }
+                if exist {
+                    return
+                }
+                print("Service does not exist!")
             }
         }
     }

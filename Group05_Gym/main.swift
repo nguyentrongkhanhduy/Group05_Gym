@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 let gym = Gym()
 gym.launch()
 

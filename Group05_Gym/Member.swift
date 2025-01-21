@@ -65,7 +65,42 @@ class Member {
         return self._bookedService
     }
     
+    func getCancellableService() -> [Service] {
+        return self._bookedService.filter { $0.attendedSession < $0.totalSession }
+    }
+    
     func markAttendance(id: Int) {
+        
+    }
+    
+    func getMemberInfo() -> String {
+        """
+        Member Info:
+        - ID: \(self.id)
+        - Name: \(self.name)
+        - Credit Balance: \(self.creditBalance)
+        - Booked Services: \(self._bookedService.map { $0.name }.joined(separator: ", "))
+        """
+    }
+    
+    func bookService(_ service: Service) {
+        if self.creditBalance >= service.price {
+            if !self._bookedService.contains(where: { $0.id == service.id }) {
+                self._bookedService.append(service)
+                self.creditBalance -= service.price
+                print("Book successed!")
+                // TODO: print receipt with printReceipt of Service
+                return
+            } else {
+                print()
+                print("Book Failed: You have already booked this service!")
+                return
+            }
+        } else {
+            print()
+            print("Book Failed: Not enough credit balance!")
+            return
+        }
         
     }
 }
