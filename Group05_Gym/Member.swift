@@ -89,7 +89,7 @@ class Member {
                 self._bookedService.append(service)
                 self.creditBalance -= service.price
                 print("Book successed!")
-                // TODO: print receipt with printReceipt of Service
+                service.printReceipt(type: "Booking", member: self)
                 return
             } else {
                 print()
@@ -102,5 +102,23 @@ class Member {
             return
         }
         
+    }
+    
+    func cancelService(_ service: Service) {
+        if self._bookedService.contains(where: { $0.id == service.id }) {
+            if service.attendedSession <= 1 {
+                self._bookedService.removeAll { $0.id == service.id }
+                self.creditBalance += service.price
+                print("Cancel successed!")
+                service.printReceipt(type: "Cancellation", member: self)
+                return
+            } else {
+                print("Cancel Failed: you has attended more than 1 sessions of the service!")
+            }
+        } else {
+            print()
+            print("Cancel Failed: You haven't booked this service!")
+            return
+        }
     }
 }

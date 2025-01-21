@@ -288,6 +288,8 @@ class Gym {
                 if memberLogin() {
                     continue
                 }
+            case 2:
+                createMember()
             case 3:
                 return
             default:
@@ -343,7 +345,11 @@ class Gym {
             case 3:
                 purchaseService(memberId: memberId)
             case 4:
-                manageMyServices(memberId: memberId)
+                if member.getBookedService().count == 0 {
+                    print("\nYou have no booked service yet.")
+                } else {
+                    manageMyServices(memberId: memberId)
+                }
             case 5:
                 return true
             default :
@@ -440,13 +446,21 @@ class Gym {
             print("     1. make attendance for booked service")
             print("     2. cancel booked service")
             print("     3. return")
-            
+            let member = self.membershipList.first(where: { $0.id == memberId })!
             switch Utils.checkValidInput(range: 1...2) {
             case 1:
-                makeAttendance(memberId: memberId)
+                if member.getBookedService().count == 0 {
+                    print("\nYou don't have any service booked yet.")
+                } else {
+                    makeAttendance(memberId: memberId)
+                }
                 return
             case 2:
-                cancelService(memberId: memberId)
+                if member.getBookedService().count == 0 {
+                    print("\nYou don't have any service booked yet.")
+                } else {
+                    cancelService(memberId: memberId)
+                }
                 return
             case 3:
                 return
@@ -476,12 +490,12 @@ class Gym {
                         if service.attendedSession < service.totalSession {
                             service.attendedSession += 1
                         } else {
-                            print("You already finished this service!")
+                            print("\nYou already finished this service!")
                         }
                         return
                     }
                 }
-                print("Service ID does not exist!")
+                print("\nService ID does not exist!")
             } else {
                 var exist = false
                 for service in serviceList {
@@ -495,14 +509,14 @@ class Gym {
                         if service.attendedSession < service.totalSession {
                             service.attendedSession += 1
                         } else {
-                            print("You already finished this service!")
+                            print("\nYou already finished this service!")
                         }
                     }
                 }
                 if exist {
                     return
                 }
-                print("Service does not exist!")
+                print("\nThis service does not exist in your purchased history!")
             }
         }
     }
@@ -524,11 +538,11 @@ class Gym {
                         print(service.info)
                         print("\nPress Enter to continue...")
                         _ = readLine()
-                        // TODO: cancel logic
+                        self.membershipList.first(where: { $0.id == memberId })!.cancelService(service)
                         return
                     }
                 }
-                print("Service ID does not exist!")
+                print("\nThis service does not exist in your purchased list!")
             } else {
                 var exist = false
                 for service in serviceList {
@@ -539,14 +553,37 @@ class Gym {
                         print(service.info)
                         print("\nPress Enter to continue...")
                         _ = readLine()
-                        // TODO: cancel logic
+                        self.membershipList.first(where: { $0.id == memberId })!.cancelService(service)
                     }
                 }
                 if exist {
                     return
                 }
-                print("Service does not exist!")
+                print("\nThis service does not exist in your purchased list!")
             }
+        }
+    }
+    
+    func createMember() {
+        print()
+        print("=== Create a New Membership ===")
+        print("Enter your name:")
+        
+        if let name = readLine(), !name.isEmpty {
+            // Generate a unique ID for the new member
+            let newID = (self.membershipList.last?.id ?? 0) + 1 // Increment ID based on the last member's ID
+            
+            // Create a new member instance
+            let newMember = Member(id: newID, name: name, bookedService: [])
+            
+            // Add the new member to the list
+            self.membershipList.append(newMember)
+            
+            print()
+            print("Membership created successfully!")
+            print(newMember.getMemberInfo())
+        } else {
+            print("Invalid name. Please try again.")
         }
     }
 }
