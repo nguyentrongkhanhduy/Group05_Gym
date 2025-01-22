@@ -84,20 +84,14 @@ class Member {
                     if service.id == number {
                         print(service.info)
                         print("Attended sessions: \(service.attendedSession)\n")
-                        print("\nPress Enter to continue...")
-                        _ = readLine()
-                        if service.attendedSession < service.totalSession {
-                            service.attendedSession += 1
-                            if service.attendedSession == service.totalSession {
-                                self._bookedService.removeAll { $0.id == service.id }
-                            }
-                        } else {
-                            print("\nYou already finished this service!")
+                        service.attendedSession += 1
+                        if service.attendedSession == service.totalSession {
+                            self._bookedService.removeAll { $0.id == service.id }
                         }
                         return
                     }
                 }
-                print("\nThis service does not exist in your purchased history!")
+                Utils.printWithEnter("\nThis service does not exist in your purchased history!")
             } else {
                 var exist = false
                 for service in self._bookedService {
@@ -107,22 +101,16 @@ class Member {
                         exist = true
                         print(service.info)
                         print("Attended sessions: \(service.attendedSession)\n")
-                        print("\nPress Enter to continue...")
-                        _ = readLine()
-                        if service.attendedSession < service.totalSession {
-                            service.attendedSession += 1
-                            if service.attendedSession == service.totalSession {
-                                self._bookedService.removeAll { $0.id == service.id }
-                            }
-                        } else {
-                            print("\nYou already finished this service!")
+                        service.attendedSession += 1
+                        if service.attendedSession == service.totalSession {
+                            self._bookedService.removeAll { $0.id == service.id }
                         }
                     }
                 }
                 if exist {
                     return
                 }
-                print("\nThis service does not exist in your purchased history!")
+                Utils.printWithEnter("\nThis service does not exist in your purchased history!")
             }
         }
     }
@@ -146,13 +134,11 @@ class Member {
                 service.printReceipt(type: "Booking", member: self)
                 return
             } else {
-                print()
-                print("Book Failed: You have already booked this service!")
+                Utils.printWithEnter("Book Failed: You have already booked this service!")
                 return
             }
         } else {
-            print()
-            print("Book Failed: Not enough credit balance!")
+            Utils.printWithEnter("Book Failed: Not enough credit balance!")
             return
         }
         
@@ -179,7 +165,7 @@ class Member {
                         return
                     }
                 }
-                print("\nThis service does not exist in your purchased list!")
+                Utils.printWithEnter("\nThis service does not exist in your purchased list!")
             } else {
                 var exist = false
                 for service in self._bookedService {
@@ -197,7 +183,7 @@ class Member {
                 if exist {
                     return
                 }
-                print("\nThis service does not exist in your purchased list!")
+                Utils.printWithEnter("\nThis service does not exist in your purchased list!")
             }
         }
     }

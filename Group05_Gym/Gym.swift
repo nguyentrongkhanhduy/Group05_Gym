@@ -347,7 +347,7 @@ class Gym {
                 purchaseService(memberId: memberId)
             case 5:
                 if member.getBookedService().count == 0 {
-                    print("\nYou have no booked service yet.")
+                    Utils.printWithEnter("\nYou have no booked service yet.")
                 } else {
                     manageMyServices(memberId: memberId)
                 }
@@ -402,7 +402,7 @@ class Gym {
                     return
                 }
             }
-            print("Service ID does not exist!")
+            Utils.printWithEnter("Service ID does not exist!")
         } else {
             var exist = false
             for service in serviceList {
@@ -417,7 +417,7 @@ class Gym {
             if exist {
                 return
             }
-            print("Service does not exist!")
+            Utils.printWithEnter("Service does not exist!")
         }
     }
     
@@ -452,14 +452,14 @@ class Gym {
             switch Utils.checkValidInput(range: 1...4) {
             case 1:
                 if member.getBookedService().count == 0 {
-                    print("\nYou don't have any service booked yet.")
+                    Utils.printWithEnter("\nYou don't have any service booked yet.")
                 } else {
                     member.makeAttendance()
                 }
                 return
             case 2:
                 if member.getBookedService().count == 0 {
-                    print("\nYou don't have any service booked yet.")
+                    Utils.printWithEnter("\nYou don't have any service booked yet.")
                 } else {
                     member.cancelService()
                 }
@@ -467,7 +467,7 @@ class Gym {
             case 3:
                 let services = member.getBookedService()
                 if services.count == 0 {
-                    print("\nYou don't have any service booked yet.")
+                    Utils.printWithEnter("\nYou don't have any service booked yet.")
                 } else {
                     print("\nYour booked services:")
                     for service in services {
@@ -492,12 +492,14 @@ class Gym {
         
         // Create a new member instance
         let newMember = Member(name: name)
-        
-        // Add the new member to the list
-        self.membershipList.append(newMember)
-        print()
-        print("Membership created successfully!")
-        print(newMember.getMemberInfo())
-
+        if !Utils.checkMemberExisted(membershipList: self.membershipList, id: newMember.id) {
+            // Add the new member to the list
+            self.membershipList.append(newMember)
+            print()
+            print("Membership created successfully!")
+            print(newMember.getMemberInfo())
+        } else {
+            Utils.printWithEnter("Member id already exists!")
+        }
     }
 }

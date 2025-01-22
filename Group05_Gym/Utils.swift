@@ -111,4 +111,10 @@ class Utils {
         }
         return false
     }
+    
+    static func printWithEnter(_ text: String) {
+        print(text)
+        print("\nPress Enter to continue...")
+        _ = readLine()
+    }
 }
