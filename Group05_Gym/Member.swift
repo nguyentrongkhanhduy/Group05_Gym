@@ -134,12 +134,23 @@ class Member {
             let serviceId = Utils.checkInputInt()
             for service in self._bookedService {
                 if service.id == serviceId {
+                    print("Below is the service you want to cancel:")
                     print(service.info)
                     print("Attended sessions: \(service.attendedSession)\n")
-                    print("\nPress Enter to continue...")
-                    _ = readLine()
-                    self.cancelServiceAction(service)
-                    return
+                    print()
+                    print("please select your action:")
+                    print("     1. confirm cancel")
+                    print("     2. Return")
+                    
+                    switch Utils.checkValidInput(range: 1...2) {
+                    case 1:
+                        self.cancelServiceAction(service)
+                        return
+                    case 2:
+                        return
+                    default:
+                        return
+                    }
                 }
             }
             Utils.printWithEnter("\nThis service does not exist in your purchased list!")
