@@ -191,6 +191,10 @@ class Gym {
                 .checkServiceExisted(serviceList: self.serviceList, id: newId) {
                 continue
             }
+            if newId == -1 {
+                print("Please enter valid input.")
+                continue
+            }
             
             print("Please enter class name:")
             let newName = Utils.checkInputString()
