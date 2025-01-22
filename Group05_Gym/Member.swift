@@ -100,7 +100,6 @@ class Member {
         - ID: \(self.id)
         - Name: \(self.name)
         - Credit Balance: \(self.creditBalance)
-        - Booked Services: \(self._bookedService.map { $0.name }.joined(separator: ", "))
         """
     }
     
