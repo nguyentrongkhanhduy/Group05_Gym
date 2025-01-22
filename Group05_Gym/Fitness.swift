@@ -20,7 +20,7 @@ class Fitness : Service {
     
     override var info: String {
         var result = "--------------------------------------------------------\n"
-        result += "ID: \(self.id)\nService type: \(self.type)\nName: \(self.name)\nCredit: \(self.price)\nTotal sessions: \(self.totalSession)\nAttended sessions: \(self.attendedSession)\n"
+        result += "ID: \(self.id)\nService type: \(self.type)\nName: \(self.name)\nCredit: \(self.price)\nTotal sessions: \(self.totalSession)\n"
         result += "Duration: \(self.duration)"
         return result
     }

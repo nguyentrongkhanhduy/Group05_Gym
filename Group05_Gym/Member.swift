@@ -69,8 +69,62 @@ class Member {
         return self._bookedService.filter { $0.attendedSession < $0.totalSession }
     }
     
-    func markAttendance(id: Int) {
-        
+    func makeAttendance() {
+        while true{
+            print("hi, here are your services:")
+            for service in self._bookedService {
+                print(service.info)
+                print("Attended sessions: \(service.attendedSession)\n")
+            }
+            print("-----------------------------------------")
+            print("Please enter Service ID or keyword you want attend:")
+            let keyword = Utils.checkInputString()
+            if let number = Int(keyword) {
+                for service in self._bookedService {
+                    if service.id == number {
+                        print(service.info)
+                        print("Attended sessions: \(service.attendedSession)\n")
+                        print("\nPress Enter to continue...")
+                        _ = readLine()
+                        if service.attendedSession < service.totalSession {
+                            service.attendedSession += 1
+                            if service.attendedSession == service.totalSession {
+                                self._bookedService.removeAll { $0.id == service.id }
+                            }
+                        } else {
+                            print("\nYou already finished this service!")
+                        }
+                        return
+                    }
+                }
+                print("\nThis service does not exist in your purchased history!")
+            } else {
+                var exist = false
+                for service in self._bookedService {
+                    if service.name
+                        .lowercased()
+                        .contains(keyword.lowercased()) {
+                        exist = true
+                        print(service.info)
+                        print("Attended sessions: \(service.attendedSession)\n")
+                        print("\nPress Enter to continue...")
+                        _ = readLine()
+                        if service.attendedSession < service.totalSession {
+                            service.attendedSession += 1
+                            if service.attendedSession == service.totalSession {
+                                self._bookedService.removeAll { $0.id == service.id }
+                            }
+                        } else {
+                            print("\nYou already finished this service!")
+                        }
+                    }
+                }
+                if exist {
+                    return
+                }
+                print("\nThis service does not exist in your purchased history!")
+            }
+        }
     }
     
     func getMemberInfo() -> String {
@@ -86,7 +140,7 @@ class Member {
     func bookService(_ service: Service) {
         if self.creditBalance >= service.price {
             if !self._bookedService.contains(where: { $0.id == service.id }) {
-                self._bookedService.append(service)
+                self._bookedService.append(Utils.deepCopyService(service: service))
                 self.creditBalance -= service.price
                 print("Book successed!")
                 service.printReceipt(type: "Booking", member: self)
@@ -104,7 +158,51 @@ class Member {
         
     }
     
-    func cancelService(_ service: Service) {
+    func cancelService() {
+        while true{
+            print("hi, here are your cancellable services:")
+            for service in self._bookedService {
+                print(service.info)
+                print("Attended sessions: \(service.attendedSession)\n")
+            }
+            print("-----------------------------------------")
+            print("Please enter Service ID or keyword you want cancel:")
+            let keyword = Utils.checkInputString()
+            if let number = Int(keyword) {
+                for service in self._bookedService {
+                    if service.id == number {
+                        print(service.info)
+                        print("Attended sessions: \(service.attendedSession)\n")
+                        print("\nPress Enter to continue...")
+                        _ = readLine()
+                        self.cancelServiceAction(service)
+                        return
+                    }
+                }
+                print("\nThis service does not exist in your purchased list!")
+            } else {
+                var exist = false
+                for service in self._bookedService {
+                    if service.name
+                        .lowercased()
+                        .contains(keyword.lowercased()) {
+                        exist = true
+                        print(service.info)
+                        print("Attended sessions: \(service.attendedSession)\n")
+                        print("\nPress Enter to continue...")
+                        _ = readLine()
+                        self.cancelServiceAction(service)
+                    }
+                }
+                if exist {
+                    return
+                }
+                print("\nThis service does not exist in your purchased list!")
+            }
+        }
+    }
+    
+    func cancelServiceAction(_ service: Service) {
         if self._bookedService.contains(where: { $0.id == service.id }) {
             if service.attendedSession <= 1 {
                 self._bookedService.removeAll { $0.id == service.id }
