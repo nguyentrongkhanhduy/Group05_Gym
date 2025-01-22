@@ -42,18 +42,14 @@ class Utils {
         return 0.0
     }
     
-    //return -1 if invalid
     static func checkInputInt() -> Int {
-        var inputMemberType: String?
-        inputMemberType = readLine()
-        while checkInput(input: inputMemberType) {
-            print("Please enter valid input.")
-            inputMemberType = readLine()
+        while true {
+            if let input = readLine(), let number = Int(input), number >= 0 {
+                return number
+            } else {
+                print("Please enter valid non-negative integer input.")
+            }
         }
-        if let number = Int(inputMemberType!) {
-            return number
-        }
-        return -1
     }
     
     //return int in range
