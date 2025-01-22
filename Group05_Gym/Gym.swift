@@ -139,7 +139,11 @@ class Gym {
             print("Please create an ID for the service:")
             let newId = Utils.checkInputInt()
             if Utils
-                .checkServiceExisted(serviceList: self.serviceList, id: newId) || newId == -1{
+                .checkServiceExisted(serviceList: self.serviceList, id: newId) {
+                continue
+            }
+            if newId == -1 {
+                print("Please enter valid input.")
                 continue
             }
             
