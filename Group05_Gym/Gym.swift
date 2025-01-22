@@ -382,7 +382,7 @@ class Gym {
             print()
             print("Hi \(member.name), please select your action:")
             print("     1. View all services")
-            print("     2. Purchase service by name or id")
+            print("     2. Book a service")
             print("     3. Return")
             
             switch Utils.checkValidInput(range: 1...3) {
