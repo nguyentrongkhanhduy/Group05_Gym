@@ -392,33 +392,17 @@ class Gym {
     
     func purchaseServiceBynameOrId(memberId: Int) {
         print()
-        print("Please enter Service ID or keyword:")
-        let keyword = Utils.checkInputString()
-        if let number = Int(keyword) {
-            for service in serviceList {
-                if service.id == number {
-                    print(service.info)
-                    purchaseAction(memberId: memberId, service: service)
-                    return
-                }
-            }
-            Utils.printWithEnter("Service ID does not exist!")
-        } else {
-            var exist = false
-            for service in serviceList {
-                if service.name
-                    .lowercased()
-                    .contains(keyword.lowercased()) {
-                    exist = true
-                    print(service.info)
-                    purchaseAction(memberId: memberId, service: service)
-                }
-            }
-            if exist {
+        print("Please enter Service ID:")
+        let serviceId = Utils.checkInputInt()
+        for service in serviceList {
+            if service.id == serviceId {
+                print(service.info)
+                purchaseAction(memberId: memberId, service: service)
                 return
             }
-            Utils.printWithEnter("Service does not exist!")
         }
+        Utils.printWithEnter("Service ID does not exist!")
+
     }
     
     func purchaseAction(memberId: Int, service: Service){
@@ -474,6 +458,8 @@ class Gym {
                         print(service.info)
                         print("Attended sessions: \(service.attendedSession)\n")
                     }
+                    print("\nPress Enter to continue...")
+                    _ = readLine()
                 }
                 return
             case 4:

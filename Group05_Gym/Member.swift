@@ -77,41 +77,20 @@ class Member {
                 print("Attended sessions: \(service.attendedSession)\n")
             }
             print("-----------------------------------------")
-            print("Please enter Service ID or keyword you want attend:")
-            let keyword = Utils.checkInputString()
-            if let number = Int(keyword) {
-                for service in self._bookedService {
-                    if service.id == number {
-                        print(service.info)
-                        print("Attended sessions: \(service.attendedSession)\n")
-                        service.attendedSession += 1
-                        if service.attendedSession == service.totalSession {
-                            self._bookedService.removeAll { $0.id == service.id }
-                        }
-                        return
+            print("Please enter Service ID you want attend:")
+            let serviceId = Utils.checkInputInt()
+            for service in self._bookedService {
+                if service.id == serviceId {
+                    print(service.info)
+                    print("Attended sessions: \(service.attendedSession)\n")
+                    service.attendedSession += 1
+                    if service.attendedSession == service.totalSession {
+                        self._bookedService.removeAll { $0.id == service.id }
                     }
-                }
-                Utils.printWithEnter("\nThis service does not exist in your purchased history!")
-            } else {
-                var exist = false
-                for service in self._bookedService {
-                    if service.name
-                        .lowercased()
-                        .contains(keyword.lowercased()) {
-                        exist = true
-                        print(service.info)
-                        print("Attended sessions: \(service.attendedSession)\n")
-                        service.attendedSession += 1
-                        if service.attendedSession == service.totalSession {
-                            self._bookedService.removeAll { $0.id == service.id }
-                        }
-                    }
-                }
-                if exist {
                     return
                 }
-                Utils.printWithEnter("\nThis service does not exist in your purchased history!")
             }
+            Utils.printWithEnter("\nThis service does not exist in your purchased history!")
         }
     }
     
@@ -152,39 +131,21 @@ class Member {
                 print("Attended sessions: \(service.attendedSession)\n")
             }
             print("-----------------------------------------")
-            print("Please enter Service ID or keyword you want cancel:")
-            let keyword = Utils.checkInputString()
-            if let number = Int(keyword) {
-                for service in self._bookedService {
-                    if service.id == number {
-                        print(service.info)
-                        print("Attended sessions: \(service.attendedSession)\n")
-                        print("\nPress Enter to continue...")
-                        _ = readLine()
-                        self.cancelServiceAction(service)
-                        return
-                    }
-                }
-                Utils.printWithEnter("\nThis service does not exist in your purchased list!")
-            } else {
-                var exist = false
-                for service in self._bookedService {
-                    if service.name
-                        .lowercased()
-                        .contains(keyword.lowercased()) {
-                        exist = true
-                        print(service.info)
-                        print("Attended sessions: \(service.attendedSession)\n")
-                        print("\nPress Enter to continue...")
-                        _ = readLine()
-                        self.cancelServiceAction(service)
-                    }
-                }
-                if exist {
+            print("Please enter Service ID you want cancel:")
+            let serviceId = Utils.checkInputInt()
+            for service in self._bookedService {
+                if service.id == serviceId {
+                    print(service.info)
+                    print("Attended sessions: \(service.attendedSession)\n")
+                    print("\nPress Enter to continue...")
+                    _ = readLine()
+                    self.cancelServiceAction(service)
                     return
                 }
-                Utils.printWithEnter("\nThis service does not exist in your purchased list!")
             }
+            Utils.printWithEnter("\nThis service does not exist in your purchased list!")
+
+            Utils.printWithEnter("\nThis service does not exist in your purchased list!")
         }
     }
     
