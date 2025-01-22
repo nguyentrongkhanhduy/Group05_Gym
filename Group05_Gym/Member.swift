@@ -162,7 +162,7 @@ class Member {
             if service.attendedSession <= 1 {
                 self._bookedService.removeAll { $0.id == service.id }
                 self.creditBalance += service.price
-                print("Cancel successed!")
+                print("Cancellation success!")
                 service.printReceipt(type: "Cancellation", member: self)
                 return
             } else {
