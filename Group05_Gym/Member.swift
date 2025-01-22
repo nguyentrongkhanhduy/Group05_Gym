@@ -144,8 +144,6 @@ class Member {
                 }
             }
             Utils.printWithEnter("\nThis service does not exist in your purchased list!")
-
-            Utils.printWithEnter("\nThis service does not exist in your purchased list!")
         }
     }
     
